@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="assets/images/pipe.png">
+    <meta name="description" content="Mario Jump: jogo de pular canos feito com HTML, CSS e JavaScript puro.">
+    <link rel="stylesheet" href="style.css">
+    <script src="./script.js" defer></script>
+    <title>MARIO JUMP</title>
+</head>
+<body>
+
+    <main class="wrapper">
+
+        <!-- Placar -->
+        <header class="hud">
+            <div class="hud-item">
+                <span class="hud-label">PONTOS</span>
+                <span class="hud-value" id="score">00000</span>
+            </div>
+            <div class="hud-item">
+                <span class="hud-label">NÍVEL</span>
+                <span class="hud-value" id="level">1</span>
+            </div>
+            <div class="hud-item">
+                <span class="hud-label">RECORDE</span>
+                <span class="hud-value" id="best">00000</span>
+            </div>
+            <div class="hud-buttons">
+                <button class="icon-btn" id="btn-pause" title="Pausar (P)" aria-label="Pausar">❚❚</button>
+                <button class="icon-btn" id="btn-sound" title="Som (M)" aria-label="Som ligado">♪</button>
+            </div>
+        </header>
+
+        <!-- Tabuleiro do jogo -->
+        <div class="game-board" id="board">
+            <div class="clouds" id="clouds"></div>
+            <div class="clouds clouds--far" id="clouds-far"></div>
+
+            <div id="pipes"></div>
+
+            <img src="assets/images/mario.gif" class="mario" id="mario" alt="Mario" draggable="false">
+
+            <div class="ground" id="ground"></div>
+
+            <div class="level-up" id="level-up">NÍVEL 2!</div>
+
+            <!-- Tela inicial -->
+            <div class="overlay" id="start-screen">
+                <h1 class="title">MARIO<br>JUMP</h1>
+                <p class="blink">Aperte ESPAÇO ou toque para começar</p>
+                <ul class="controls">
+                    <li><kbd>ESPAÇO</kbd> / <kbd>↑</kbd> / toque — pular</li>
+                    <li>Segure para pular mais alto</li>
+                    <li><kbd>P</kbd> pausar · <kbd>M</kbd> som</li>
+                </ul>
+            </div>
+
+            <!-- Pausa -->
+            <div class="overlay hidden" id="pause-screen">
+                <h2 class="title title--small">PAUSADO</h2>
+                <p class="blink">Aperte P ou toque para continuar</p>
+            </div>
+
+            <!-- Game over -->
+            <div class="overlay hidden" id="gameover-screen">
+                <h2 class="title title--small">GAME OVER</h2>
+                <p class="final">Pontos: <strong id="final-score">0</strong></p>
+                <p class="final" id="new-record">🏆 NOVO RECORDE!</p>
+                <button class="btn" id="btn-restart">JOGAR DE NOVO</button>
+                <p class="hint">ou aperte ESPAÇO</p>
+            </div>
+        </div>
+
+        <footer class="credits">
+            Feito por <a href="https://github.com/Jarlisson-cpu" target="_blank" rel="noopener">Jarlisson Brito</a>
+        </footer>
+    </main>
+
+</body>
+</html>

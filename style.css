@@ -1,0 +1,284 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --sky-top: #5c94fc;
+    --sky-bottom: #a4c8ff;
+    --ground: #c84c0c;
+    --ground-dark: #7a2e06;
+    --grass: #4caf28;
+    --text: #fff;
+    --shadow: #000;
+    --accent: #ffd800;
+    --page-bg: #1b1b2f;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    background: var(--page-bg);
+    color: var(--text);
+    font-family: 'Press Start 2P', monospace;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.wrapper {
+    width: 100%;
+    max-width: 960px;
+}
+
+/* ---------- Placar ---------- */
+.hud {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 12px 4px;
+    flex-wrap: wrap;
+}
+
+.hud-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.hud-label {
+    font-size: 9px;
+    color: #9aa0c3;
+}
+
+.hud-value {
+    font-size: 16px;
+    font-variant-numeric: tabular-nums;
+}
+
+.hud-buttons {
+    margin-left: auto;
+    display: flex;
+    gap: 8px;
+}
+
+.icon-btn {
+    font: inherit;
+    font-size: 12px;
+    width: 40px;
+    height: 40px;
+    border: 3px solid #fff;
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.icon-btn:hover { background: rgba(255, 255, 255, .15); }
+.icon-btn.off { opacity: .4; text-decoration: line-through; }
+
+/* ---------- Tabuleiro ---------- */
+.game-board {
+    width: 100%;
+    height: 500px;
+    max-height: 70vh;
+    min-height: 300px;
+    border: 4px solid #000;
+    border-radius: 6px;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(var(--sky-top), var(--sky-bottom));
+    transition: background 1.5s ease;
+    cursor: pointer;
+    touch-action: manipulation;
+    image-rendering: pixelated;
+}
+
+/* Céu muda de cor a cada nível (classe colocada pelo script) */
+.game-board.sky-2 { background: linear-gradient(#f8a040, #ffd9a0); }
+.game-board.sky-3 { background: linear-gradient(#7a3fa0, #e07a8a); }
+.game-board.sky-4 { background: linear-gradient(#0b1033, #2c3f7a); }
+.game-board.sky-5 { background: linear-gradient(#000, #3a0d2e); }
+
+.clouds {
+    position: absolute;
+    top: 12%;
+    left: 0;
+    width: 100%;
+    height: 26%;
+    background: url(assets/images/clouds.png) repeat-x;
+    background-size: auto 100%;
+    pointer-events: none;
+}
+
+.clouds--far {
+    top: 3%;
+    height: 13%;
+    opacity: .45;
+    background-position-y: 0;
+}
+
+.ground {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 40px;
+    z-index: 3;
+    border-top: 6px solid var(--grass);
+    background-color: var(--ground);
+    /* "tijolinhos" feitos só com CSS */
+    background-image:
+        linear-gradient(90deg, var(--ground-dark) 3px, transparent 3px),
+        linear-gradient(var(--ground-dark) 3px, transparent 3px);
+    background-size: 34px 17px;
+}
+
+.pipe {
+    position: absolute;
+    left: 0;      /* a posição real é controlada pelo script (transform) */
+    bottom: 40px; /* em cima do chão */
+    z-index: 2;
+    pointer-events: none;
+}
+
+.mario {
+    position: absolute;
+    left: 40px;
+    bottom: 40px;
+    z-index: 4;
+    pointer-events: none;
+}
+
+/* ---------- Mensagem de nível ---------- */
+.level-up {
+    position: absolute;
+    top: 42%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(.6);
+    font-size: clamp(18px, 4vw, 32px);
+    color: var(--accent);
+    text-shadow: 4px 4px 0 var(--shadow);
+    opacity: 0;
+    z-index: 6;
+    pointer-events: none;
+}
+
+.level-up.show {
+    animation: pop 1.4s ease-out;
+}
+
+@keyframes pop {
+    0%   { opacity: 0; transform: translate(-50%, -50%) scale(.6); }
+    20%  { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+    70%  { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    100% { opacity: 0; transform: translate(-50%, -80%) scale(1); }
+}
+
+/* ---------- Telas por cima do jogo ---------- */
+.overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    text-align: center;
+    padding: 16px;
+    background: rgba(0, 0, 0, .45);
+}
+
+.overlay.hidden { display: none; }
+
+.title {
+    font-size: clamp(28px, 7vw, 56px);
+    line-height: 1.25;
+    color: var(--accent);
+    text-shadow: 5px 5px 0 #c00000, 9px 9px 0 var(--shadow);
+}
+
+.title--small {
+    font-size: clamp(22px, 5vw, 40px);
+}
+
+.blink {
+    font-size: clamp(9px, 1.6vw, 12px);
+    text-shadow: 2px 2px 0 var(--shadow);
+    animation: blink 1s steps(2, start) infinite;
+}
+
+@keyframes blink { to { visibility: hidden; } }
+
+.controls {
+    list-style: none;
+    font-size: clamp(8px, 1.3vw, 10px);
+    line-height: 2.2;
+    text-shadow: 2px 2px 0 var(--shadow);
+}
+
+kbd {
+    font-family: inherit;
+    background: #fff;
+    color: #000;
+    padding: 2px 6px;
+    border-radius: 3px;
+    box-shadow: 0 3px 0 #888;
+}
+
+.final {
+    font-size: clamp(11px, 2vw, 16px);
+    text-shadow: 2px 2px 0 var(--shadow);
+}
+
+#new-record {
+    color: var(--accent);
+    animation: blink .6s steps(2, start) infinite;
+}
+
+.btn {
+    font: inherit;
+    font-size: clamp(10px, 1.8vw, 14px);
+    padding: 14px 22px;
+    background: #e52521;
+    color: #fff;
+    border: 4px solid #000;
+    box-shadow: 0 6px 0 #000;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.btn:hover  { background: #ff3b36; }
+.btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #000; }
+
+.hint {
+    font-size: 9px;
+    color: #ddd;
+}
+
+.credits {
+    text-align: center;
+    font-size: 9px;
+    color: #9aa0c3;
+    padding: 14px;
+}
+
+.credits a { color: var(--accent); }
+
+/* ---------- Celular ---------- */
+@media (max-width: 600px) {
+    body { padding: 8px; align-items: flex-start; }
+    .hud { gap: 14px; }
+    .hud-value { font-size: 12px; }
+    .ground { height: 28px; }
+    .pipe { bottom: 28px; }
+    .mario { bottom: 28px; left: 16px; }
+}
